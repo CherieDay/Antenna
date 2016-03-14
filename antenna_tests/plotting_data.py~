@@ -1,0 +1,28 @@
+#! /usr/bin/env python
+
+import numpy as np, csv, matplotlib.pyplot as plt, sys
+
+for file in sys.argv[1:]:
+    f = open(file)
+    csv_f = csv.reader(f)
+
+    rowlist = []
+    for row in csv_f:
+        rowlist.append(row)
+
+    rowlist = rowlist[18:-1]
+    
+    x = np.array([r[0] for r in rowlist], dtype=np.float)
+    y = np.array([r[1] for r in rowlist], dtype=np.float)
+    
+    print type(x), type(y)
+    plt.plot(x/1e6, y) #x*1e9, y) for time axis
+    if 'LOG_MAG' in file:
+        plt.xlabel('frequency (MHz)') #('time (ns)') for time axis
+        plt.ylabel('log magnitude (dB)')
+        plt.ylim(-30, 10) #(-75, 0) for use with time axis
+        plt.show()
+    elif 'PHASE' in file:
+        plt.xlabel('frequency (MHz)') #('time (ns)') for time axis
+        plt.ylabel('phase (deg)')
+        plt.show()
