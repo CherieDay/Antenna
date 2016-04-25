@@ -1,0 +1,55 @@
+Notes for Days 1 and 2: Testing on Spiral Antennas
+
+March 7, 2016:
+
+We calibrated the VNA with the following parameters:
+(1) 50-250MHz
+(2) averaging 100
+(3) two-port calibration
+(4) port 1 DUT female type-N
+(5) port 2 DUT male type-N
+(6) LMR-400 (50ft / 15.24m) cables used
+
+The following data was saved:
+(1) calibr_db.csv and caliber_ph.csv: port 1 was connected through the LMR-400 to the 50ohm load on the cal kit. There are two prominent structural features prior to t=0 (defined as the end of the connector at the end of the cable [where the antenna is to be connected]). These must be due to some reflections occurring prior to the t=0 plane, but they do seem to correspond to the length of the cable, evidenced by the time delay between the two features. In the positive time region, there are some ripples, but it is overall fairly flat.
+(2) open_db.csv and open_ph.csv: port 1 was connected through the LMR-400 to the open on the cal kit. We again have two prominent features in the negative time region that line up with those seen in the load data (1). We also see symmetric reflections in the positive time region, and at t=0, we have total reflection (the magnitude is 0dB), as expected.
+(3) short_db.csv and short_ph.csv: port 1 was connected through the LMR-400 to the short on the cal kit. The time output is very close to that of the open (2), as expected given that both should result in total reflection.
+(4) s22_db.csv and s22_ph.csv: port 2 was connected through the LMR-400 to the cal kit's load. The time plot is similar to that of port 1, but we do see some extra structural features that are at higher amplitudes (about a 10dB difference). This is possibly due to port 2's use as a spectrum analyzer, while port 1 cannot be used as such. Again, the plot flattens for t>0, so there are not large-scale reflections after the t=0 plane.
+(5-6) s22_open_db.csv and s22_open_ph.csv and s22_short_db.csv and s22_short_ph.csv: port 2 was connected through the LMR-400 to the cal kit's open and then short (see file names). Again, as with port 1, we see total reflection at t=0, and symmetric reflection structural features in the negative and positive regions, corresponding to both some mismatch prior to the t=0 measurement plane and reflections after, when it reaches the open or short (which is expected). Again, the negative time region features of both the open and short plots match those seen in the load plot (4).
+
+March 8, 2016:
+
+We conducted several tests on the two spiral antennas. (Hereafter, the 1st constructed antenna will be called Helena and the 2nd, Anteneo.)
+
+We lost the previous day's calibration and had to re-calibrate. Since the LMR-400 cables caused a great deal of rippling (with delays on order of the cable length), we chose to use two smaller cables (LMR-100A-PVC), which turned out to be terrible cables, and so we calibrated only port 1 using a LMR-195 cable and for the unsaved S21/S12 measurements used one of the LMR-100A-PVC cables for Helena.
+
+We calibrated the VNA with the following parameters:
+(1) 50-250MHz
+(2) averaging 100
+(3) one-port calibration
+(4) port 1 DUT female type-N
+(5) LMR-195 cables used
+
+(1) calbr_sc_db.csv and calbr_sc_ph.csv: port 1 was connected through the LMR-195 to the cal kit load (50ohm). This gave us a fairly flat, low-level response for the S11 measurement.
+(2) open_sc_db.csv and open_sc_p.csv: port 1 was connected via the LMR-195 to the cal kit's open. This will be used as a comparison for the LMR-400 cable measurements taken yesterday (see (2) above).
+(3) anteneo_sc_db.csv and anteneo_sc_p.csv: S11 measurement for Anteneo. The response contained a lot of structure at the lower frequencies (with a large dip at about 70MHz) but was mostly flat at the higher frequencies, with ripples about 2dB wide. The phase was very noisy. The amplitude level stayed around -6.7dB.
+(4) helena_sc_db.csv and helena_sc_p.csv: port 1 was connected through the LMR-195 cable to Helena for the S11 measurement. The response contained a lot of structure at the lower frequencies as with Anteneo (with a resonant response again), but the higher frequencies appear to be even flatter than Anteneo's.
+(5) calbr_sc_rl_db.csv and calbr_sc_rl_p.csv: port 1 was connected through the LMR-400 cable to Anteneo for the S11 measurement. We then touched the end of the antenna wires to place a resistive load at the end of the wires in order to determine if this would reduce the reflection ripples. It worked!!!!!! The response was considerably flatter across the bandwidth (mostly ridded the measurement of the resonant dip as well).
+(6) We also did (unsaved) measurements using Mini-Circuits BMP-5075+ Matching Pads (one per antenna), which match 70ohm to 50ohm, to determine if this would result in a lower magnitude for the S11 measurements. This did reduce the amplitude, but this is likely due to the pad's attenuation (nom. 5.7 +- 0.1 dB) and the loss due to the extra BNC connectors (the decrease in amplitude was on the order of these additive losses) rather than an improved matching. It also introduced more structure since new mismatches at the added connection points likely caused more reflections.
+(7) We also looked at the S12 and S21 responses, but the magnitude levels were around the noise floor level of the VNA (roughly -50dB). Thus, we couldn't distinguish between any coupling between the antennas and the VNA noise.
+
+Next steps:
+(1) Look for and order a 3:1 balun, which will bring us much closer to the 50ohm impedance of the cables. For the above measurements, we were getting an impedance around 78ohm using a 2:1 balun (starting impedance of 156ohm). This should bring the magnitude levels down--hopefully, to around -10dB or lower.
+(2) Determine how to connect a resistive load to the ends of the wires and then connect them. This should markedly reduce the structure in the measurements, giving us a much smoother response across the bandwidth so that the antennas will be (ideally) frequency independent.
+(3) Once (1) and (2) are completed, we should use the pulse generator to radiate a pulsed signal from one antenna to the other. This will allow us to measure the coupling between the two at a level higher than the noise floor of the VNA.
+
+The plots referenced above:
+
+From the March 7th tests:
+Cal_Open_Short_DB_LMR_400_cable.png and Cal_Open_Short_PH_LMR_400_cable.png are referred to in (1)-(3)
+2ndPort_S22_Cal_Open_Short_DB_LMR400.png and 2ndPort_S22_Cal_Open_Short_PH_LMR400.png are discussed in (4)-(6)
+
+From the March 8th tests:
+Cal_and_open_short_cable_DB.png and Cal_and_open_short_cable_PH.png are discussed in (1)-(2)
+HELENA_short_cable_DB.png and HELENA_short_cable_PH.png are referred to in (4)
+two_spiral_ant_S11_DB.png and two_spiral_ant_S11_S22_PH.png are discussed in (3)-(5)
